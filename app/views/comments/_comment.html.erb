@@ -1,16 +1,17 @@
 <div>
   <h4>Comments</h4>
-  <div style="margin-left:300px">  
+  <div>  
     <% @article.comments.each do |comment| %>
     <% next unless comment.id %>
-      <p>[<%= comment.updated_at.strftime("%I:%M %p")%>] 
+      <p style="margin-bottom:0;">[<%= comment.updated_at.strftime("%I:%M %p")%>] 
       <%= comment.commenter %>: <%= comment.body %> 
       <% if user_signed_in?%>
         <%if current_user.id == @article.user_id %>
           <%= link_to("Edit", edit_article_comment_path(id: comment.id, article_id: comment.article_id))%> | 
           <%= link_to("Delete", [comment.article, comment], method: :delete, data:{confirm: "are you sure?"})%></p>
+        
         <%end%>
       <%end%>
-    <% end %>
+    <%end%>
   </div>
 <div>
