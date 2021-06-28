@@ -1,0 +1,24 @@
+<%= link_to "Show Archived Articles", "articles/archived", class: "btn btn-info btn-sm"%>
+<br/><br/>
+<table class="table table-hover table-striped table-bordered text-center">
+    <thead>
+    <tr class="bg-info">
+        <th scope="col">Article_Id</th>
+        <th scope="col">Title</th>
+        <th scope="col">Viewer comments</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @articles.each do |article|%>
+        <%unless article.archived? %>
+        <tr>
+            <td><%=article.id%></td>
+            <td><%=article.title%></td>
+            <td><%= pluralize(article.comments.count,"comment")%></td>
+            <td><%= link_to("Show",article_path(article.id), class: "btn btn-outline-info btn-sm")%></td>
+        </tr>
+        <%end%>
+    <%end%>
+    </tbody>
+</table>

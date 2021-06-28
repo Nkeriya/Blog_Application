@@ -1,0 +1,47 @@
+<div style="width:450px; float:left;">
+   <h2>Edit <% resource_name.to_s.humanize %> Profile</h2>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <div class="field form-group">
+      <% f.label :email %><br />
+      <%= f.email_field :email, class:"form-control", autofocus: true, autocomplete: "email" %>
+    </div>
+
+    <div class="field form-group">
+      <% f.label :current_password %>
+      <%= f.password_field :current_password, class:"form-control", placeholder: "Current Password", autocomplete: "current-password" %>
+    </div><br/>
+
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+    <% end %>
+
+    <div class="field form-group">
+      <% f.label :password %>
+      <%= f.password_field :password, class:"form-control", placeholder: "New Password (leave blank if you don't want to change it)", autocomplete: "new-password" %>
+      <% if @minimum_password_length %>
+      <p style="margin:5px 0px 0px 10px;"><em><%= @minimum_password_length %> characters minimum</em></p>
+      <% end %>
+    </div>
+
+    <div class="field form-group">
+      <% f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation, class:"form-control", placeholder: "Confirm New Password",autocomplete: "new-password" %>
+    </div>
+
+    <div class="action" style="margin-top:15px;">
+      <%= f.submit "Update",class:"btn btn-info btn-sm"  %> | <%= link_to "Back", :back, class:"btn btn-info btn-sm"  %>
+    </div>
+  <% end %>
+</div>
+
+<div style="margin: 30px 0px 0px 600px;">
+
+<div class="card border-danger mb-3" style="max-width: 18rem;">
+  <div class="card-header"><h5>Wants to delete account?</h5></div>
+  <div class="card-body text-danger">
+    <h6 class="card-title">Unhappy?</h6>
+    <p class="card-text"><%= button_to "Delete my account", registration_path(resource_name), class:"btn btn-danger btn-sm", data: { confirm: "Are you sure?" }, method: :delete %></p>
+  </div>
+</div>

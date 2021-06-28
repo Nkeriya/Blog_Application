@@ -1,0 +1,10 @@
+<div class="text-center">
+    <% if user_signed_in? %>
+        <h1>Welcome <%= current_user.email.split("@")[0].capitalize%></h1>
+        <p>Greeting of the day!!</p>
+    <% else %>
+        <h1>Welcome to the Blog Application</h1>
+        <p>Login to add your article!!</p>
+    <% end %>
+<br/><%= image_tag ("Tim_image1.png"), height: 400%>
+</div>

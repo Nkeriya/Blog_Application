@@ -1,0 +1,27 @@
+<%= link_to "Back", :back, class:"btn btn-info btn-sm"  %><br/><br/>
+
+<h3>Archived Articles</h3>
+<% if (@count != 0) %>
+    <table class="table table-hover table-striped table-bordered text-center">
+        <tr class="bg-info">
+            <th scope="col">Article_Id</th>
+            <th scope="col">Title</th>
+            <th scope="col">Viewer comments</th>
+            <th scope="col"></th>
+        </tr>
+        <% @articles.each do |article|%>
+            <% if (current_user.id == article.user_id) and (article.archived?)%>
+                <tr>
+                    <td><%=article.id%></td>
+                    <td><%=article.title%></td>
+                    <td><%= pluralize(article.comments.count,"comment")%></td>
+                    <td><%= link_to("Show",article_path(article.id), class: "btn btn-outline-info btn-sm")%></td>
+                </tr>
+            <%end%>
+        <%end%>
+    </table>
+    
+<%else%>
+    <p>Oops,  No archived article available, 
+    <%= link_to "click here", new_article_path %> to add one!!</p>
+<%end%>
