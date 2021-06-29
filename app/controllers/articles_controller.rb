@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :set_user
+  before_action :correct_user, only: [:update, :destroy]
   before_action :set_id, except: [:index, :archived, :new, :create]
   before_action :authenticate_user!, except: [:index, :show]
   
@@ -16,11 +16,14 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    @article = Article.new
+    # @article = Article.new
+    @article = current_user.articles.build
   end
 
   def create
-    @article = Article.new(article_params)
+    # @article = Article.new(article_params)
+
+    @article = current_user.articles.build(article_params)
     if @article.save
       flash[:notice] = "Article #{@article.title} has been created!"
       redirect_to articles_path
@@ -48,8 +51,10 @@ class ArticlesController < ApplicationController
   end
 
   private
-  def set_user
-    @user = User.find_by(params[:email])
+
+  def correct_user
+    @article = current_user.articles.find_by(id: params[:id])
+    redirect_to articles_path, notice: "You are not authorized to perform this action!!" if @article.nil?
   end
 
   def set_id
