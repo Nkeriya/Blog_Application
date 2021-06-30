@@ -53,8 +53,10 @@ class ArticlesController < ApplicationController
   private
 
   def correct_user
-    @article = current_user.articles.find_by(id: params[:id])
-    redirect_to articles_path, notice: "You are not authorized to perform this action!!" if @article.nil?
+    unless current_user.admin
+      @article = current_user.articles.find_by(id: params[:id])
+      redirect_to articles_path, notice: "You are not authorized to perform this action!!" if @article.nil?
+    end
   end
 
   def set_id
