@@ -8,10 +8,24 @@
         <table>
             <tr>
             <% if user_signed_in?%>
-                <%if (current_user == @article.user) or (current_user.admin) %>
-                <td><%= link_to("Edit", edit_article_path, class: "btn btn-info btn-sm")%> |
-                    <%= link_to("Delete", article_path, class: "btn btn-info btn-sm", method: :delete, data:{confirm: "are you sure?"})%></td>
-                <%end %>
+                <% unless current_user.admin %>
+                    
+                    <%if (@article.user == current_user) %>
+                        <td><%= link_to("Edit", edit_article_path, class: "btn btn-info btn-sm")%> |
+                            <%= link_to("Delete", article_path, class: "btn btn-info btn-sm", method: :delete, data:{confirm: "are you sure?"})%>
+                        </td>
+                    <%end %>
+
+                <% else %>
+                        <td>
+                            <% if @article.user.admin%>
+                                <%= link_to("Edit", edit_article_path, class: "btn btn-info btn-sm")%> |
+                            <% end %>
+                            <%= link_to("Delete", article_path, class: "btn btn-info btn-sm", method: :delete, data:{confirm: "are you sure?"})%>
+                        </td>
+
+                <% end %>
+
             <%end %>
             </tr>
         </table>

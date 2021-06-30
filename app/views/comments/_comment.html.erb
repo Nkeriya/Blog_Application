@@ -2,19 +2,33 @@
   <h4>Comments</h4>
   <div>  
     <% @article.comments.each do |comment| %>
-    <% next unless comment.id %>
-      <p style="margin-bottom:0;">[<%= comment.updated_at.strftime("%I:%M %p")%>] 
-      <%= comment.commenter %>: <%= comment.body %> 
-      <% if user_signed_in?%>
-        <%if (current_user == comment.user) or (current_user.admin) %>
+      <% next unless comment.id %>
+    
+      <p style="margin-bottom:0;">
+      [<%= comment.updated_at.strftime("%I:%M %p")%>]<%= comment.commenter %>: <%= comment.body %> 
+        <% if user_signed_in?%>
+            <% unless current_user.admin%>
+                
+                <% if current_user == comment.user%>
+                  <%= link_to("Edit", edit_article_comment_path(id: comment.id, article_id: comment.article_id))%> | 
+                <% end %>
 
-            <%= link_to("Edit", edit_article_comment_path(id: comment.id, article_id: comment.article_id))%> | 
-          <%= link_to("Delete", [comment.article, comment], method: :delete, data:{confirm: "are you sure?"})%>
+                <%if (comment.user == current_user) or (@article.user == current_user) %>
+                <%= link_to("Delete", [comment.article, comment], method: :delete, data:{confirm: "are you sure?"})%>
+                <%end %>
 
-          </p>
-        
+            <% else %>
+                <% if comment.user.admin %>
+                  <%= link_to("Edit", edit_article_comment_path(id: comment.id, article_id: comment.article_id))%> | 
+                <% end %>
+
+                <%= link_to("Delete", [comment.article, comment], method: :delete, data:{confirm: "are you sure?"})%>
+
+            <% end %>
+            </p>
+
         <%end%>
-      <%end%>
+
     <%end%>
   </div>
 <div>
